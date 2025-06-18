@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-ToolPrepareBlogPost.Worker.HatenaDraftCreator-7ef5ef6a-ab85-4d03-8b6d-602b0ee7dd8e</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ToolPrepareBlogPost.Integrations\ToolPrepareBlogPost.Integrations.csproj" />
+  </ItemGroup>
+</Project>
