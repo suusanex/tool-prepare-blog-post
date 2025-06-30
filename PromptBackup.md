@@ -1,44 +1,44 @@
-# �v�����v�g�̃o�b�N�A�b�v
+﻿# プロンプトのバックアップ
 
-## �S�̂̎w��
+## 全体の指示
 
-���̋@�\���������\�t�g���쐬���܂��B
+次の機能を持ったソフトを作成します。
 
-1�CQiita�Ɏ����[�U�[���L���𓊍e����ƁA����Markdown�f�[�^���擾���āAZenn�ւ̎����[�U�[����̓��e�p�̉��������AQiita�Ɠ������e�ō쐬����i���e�͂����A���e���̂̓��[�U�[�̑���ɔC����j�B�쐬���������[�U�[��WebHook�Œʒm����B
-2�CZenn�Ɏ����[�U�[���L���𓊍e����ƁA����URL���g�p���āA����̃e���v���[�g�ł͂Ăȃu���O�ւ̎����[�U�[����̓��e�p�̉��������쐬����i���e�͂����A���e���̂̓��[�U�[�̑���ɔC����j�B�쐬���������[�U�[��WebHook�Œʒm����B
-3�CQiita�Ɏ����[�U�[���L���𓊍e����ƁA����URL���g�p���āA����̃e���v���[�g��Linkedin�ւ̎����[�U�[����̓��e�p�̕��ʂ��쐬���A���ʂ����[�U�[��WebHook�Œʒm����i�u�������v�Ƃ����@�\�������悤�Ȃ̂ŁA���̒ʒm�ɕ��ʎ��̂��ڂ���j
-�ȏ�̋@�\�������ƂŁAQiita�ɋL���𓊍e���邾���ŁAZenn,�͂Ăȃu���O,LinkedIn�ւ̓��e�̏����������ōs����A�Ƃ����\�t�g�ł��B
+1，Qiitaに自ユーザーが記事を投稿すると、そのMarkdownデータを取得して、Zennへの自ユーザーからの投稿用の下書きを、Qiitaと同じ内容で作成する（投稿はせず、投稿自体はユーザーの操作に任せる）。作成完了をユーザーへWebHookで通知する。
+2，Zennに自ユーザーが記事を投稿すると、そのURLを使用して、特定のテンプレートではてなブログへの自ユーザーからの投稿用の下書きを作成する（投稿はせず、投稿自体はユーザーの操作に任せる）。作成完了をユーザーへWebHookで通知する。
+3，Qiitaに自ユーザーが記事を投稿すると、そのURLを使用して、特定のテンプレートでLinkedinへの自ユーザーからの投稿用の文面を作成し、文面をユーザーへWebHookで通知する（「下書き」という機能が無いようなので、この通知に文面自体を載せる）
+以上の機能を持つことで、Qiitaに記事を投稿するだけで、Zenn,はてなブログ,LinkedInへの投稿の準備が自動で行われる、というソフトです。
 
-�C�x���g�쓮�Ŏ����œ��삷��\�t�g�ƂȂ邽�߁A���샍�O�⓮��󋵂��Ď��ł���悤�ɂ��܂��B���ɁA�]�ʉۋ��ƂȂ�@�\�̎g���߂��͑����Ɍ��o�o����悤�ɂ��܂��B
+イベント駆動で自動で動作するソフトとなるため、動作ログや動作状況を監視できるようにします。特に、従量課金となる機能の使い過ぎは早期に検出出来るようにします。
 
-�N���E�h�T�[�r�X��Azure���g�p���AC#�y��.NET���g�p�����Z�p�X�^�b�N�ŁA���̃\�t�g���쐬���Ă��������B.NET Aspire��OpenTelemetry�Ȃǂ́A�V�����������ǂ���@��ϋɓI�ɍ̗p���Ă��������B
+クラウドサービスはAzureを使用し、C#及び.NETを使用した技術スタックで、このソフトを作成してください。.NET AspireやOpenTelemetryなどの、新しく効率が良い手法を積極的に採用してください。
 
-## �ʂ̎w��
+## 個別の指示
 
-### ����
+### 初回
 
-�܂��ŏ��ɁA�u�d�l��.md�v�Ƃ����t�@�C�����쐬���A�쐬����\�t�g�̃|�C���g�ƂȂ�d�l�������Ă��������B���ɁA���̓_���d�����܂��B
+まず最初に、「仕様書.md」というファイルを作成し、作成するソフトのポイントとなる仕様を書いてください。特に、次の点を重視します。
 
-1. �g�p����O���T�[�r�X�̃C���^�[�t�F�[�X�iAPI�ERSS�Ȃǁj�̈ꗗ�Ǝg�����B���ɁA�C�x���g�쓮�Ȃ̂��|�[�����O�Ȃ̂��Ƃ������Ăяo�����@���d�����܂��B
-2. �e���������삷��Azure��̃T�[�r�X�ƁA�����̃g���K�[�ƂȂ�C�x���g�̓��e
-3. �e�����̎����Ɏg�p����Z�p�iAzure Functions�Ȃǂ̃N���E�h�T�[�r�X����AASP.NET�Ȃǂ̃t���[�����[�N���j
+1. 使用する外部サービスのインターフェース（API・RSSなど）の一覧と使い方。特に、イベント駆動なのかポーリングなのかといった呼び出し方法も重視します。
+2. 各処理が動作するAzure上のサービスと、処理のトリガーとなるイベントの内容
+3. 各処理の実現に使用する技術（Azure Functionsなどのクラウドサービス名や、ASP.NETなどのフレームワーク名）
 
-### �p��
+### 継続
 
-�u�d�l��.md�v���쐬����Ă���̂ŁA����ɏ]���ă\�t�g�E�F�A���쐬���Ă��������B�u�d�l��.md�v�̓��e�ɒǉ��E�ύX����������ꍇ�́A����������������Ă��������B
+「仕様書.md」が作成されているので、これに従ってソフトウェアを作成してください。「仕様書.md」の内容に追加・変更が発生する場合は、そちらも書き換えてください。
 
-### �d�l���ǋL
+### 仕様書追記
 
-#### Zenn��������
+#### Zenn実現方式
 
-�@�\���ƂɁA����ɋ�̓I�Ɍ@�艺�����������d�l��.md�ɒǋL���Ă����܂��B���ۂɎg�p����API�Ƃ��̓��o�̓p�����[�^�A�F�ؕ��@�A�����̃V�[�P���X�Ȃǂł��B
-�܂��AZenn�������@�\�ɂ��ĒǋL���Ă��������BZenn�ł͓��ɁAQiita�̋L����Markdown�L�ڂ��擾����Zenn�̉������L���ɕϊ�����K�v�����邽�߁A���̓_���ڂ��������Ă��������B
+機能ごとに、さらに具体的に掘り下げた方式を仕様書.mdに追記していきます。実際に使用するAPIとその入出力パラメータ、認証方法、処理のシーケンスなどです。
+まず、Zennを扱う機能について追記してください。Zennでは特に、Qiitaの記事のMarkdown記載を取得してZennの下書き記事に変換する必要があるため、その点を詳しく書いてください。
 
-Zen CLI���ǂ̂悤�Ɏg���̂��ƁA�K�v�ȑO������iGit for Windows�C���X�g�[���ς݁A���j�������Ă��������B
+Zen CLIをどのように使うのかと、必要な前提条件（Git for Windowsインストール済み、等）も書いてください。
 
-�u�Ώ�GitHub���|�W�g�����`�������ς݁v�Ƃ������O����������邽�߁AGitHub���|�W�g���̏ꏊ�ȂǊO������^����K�v�̂���p�����[�^������܂����H���̎d�l���K�v�Ƃ��Ă��邻���������̓p�����[�^�ɂ��āAappsettings.json�ŗ^������̂Ƃ��āA���̒�`�������Ă��������B
+「対象GitHubリポジトリが～初期化済み」といった前提条件があるため、GitHubリポジトリの場所など外部から与える必要のあるパラメータがありますか？この仕様が必要としているそうした入力パラメータについて、appsettings.jsonで与えるものとして、その定義も書いてください。
 
-���̒�`���d�l��.md�ɋL�ڂ��Ă��������B�O������^����K�v�̂���p�����[�^�́A�d�l��.md�ɖ������܂��B
+その定義を仕様書.mdに記載してください。外部から与える必要のあるパラメータは、仕様書.mdに明示します。
 
 
 

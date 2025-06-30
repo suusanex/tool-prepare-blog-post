@@ -1,0 +1,12 @@
+# top-most EditorConfig file
+root = true
+
+# C#, Markdown, and Text files: UTF-8 with BOM
+[*.cs]
+charset = utf-8-bom
+
+[*.md]
+charset = utf-8-bom
+
+[*.txt]
+charset = utf-8-bom
