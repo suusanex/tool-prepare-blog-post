@@ -1,12 +1,26 @@
-using ToolPrepareBlogPost.Worker.QiitaWatcher;
+ï»¿using ToolPrepareBlogPost.Worker.QiitaWatcher;
 using ToolPrepareBlogPost.Integrations;
 
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddHostedService<Worker>();
-// ƒ_ƒ~[À‘•‚ğDI“o˜^
-builder.Services.AddSingleton<IQiitaApiClient, DummyQiitaApiClient>();
-builder.Services.AddSingleton<IZennDraftService, DummyZennDraftService>();
-builder.Services.AddSingleton<IWebhookNotifier, DummyWebhookNotifier>();
+
+// appsettings.jsonã‹ã‚‰Zennè¨­å®šã‚’å–å¾—
+var zennConfig = builder.Configuration.GetSection("Zenn");
+var repoPath = zennConfig["GitHubRepoPath"] ?? "";
+var gitUserName = zennConfig["GitHubUserName"] ?? "";
+var gitUserEmail = zennConfig["GitHubEmail"] ?? "";
+var gitToken = zennConfig["GitHubToken"] ?? "";
+
+// appsettings.jsonã‹ã‚‰Qiitaè¨­å®šã‚’å–å¾—
+var qiitaConfig = builder.Configuration.GetSection("QiitaApi");
+var qiitaAccessToken = qiitaConfig["AccessToken"] ?? "";
+
+builder.Services.AddSingleton<IQiitaApiClient>(
+    _ => new QiitaApiClient(qiitaAccessToken));
+builder.Services.AddSingleton<IZennDraftService>(
+    _ => new ZennDraftService(repoPath, gitUserName, gitUserEmail, gitToken));
+builder.Services.AddSingleton<IWebhookNotifier>(
+    sp => new WebhookNotifier(builder.Configuration));
 builder.Services.AddSingleton<ILinkedInMessageGenerator, DummyLinkedInMessageGenerator>();
 builder.Services.AddSingleton<ITemplateProvider, DummyTemplateProvider>();
 
